@@ -43,38 +43,50 @@ const TitleInput = styled.input`
   }
 `;
 
-function FilmAdder({
-  isAdding,
-  inputValue,
-  onInputChange,
-  onSubmit,
-  onToggle
-}) {
-  inputValue = capitalizeFirstLetterOfEachWord(inputValue);
-
-  if (isAdding) {
-    return (
-      <AddingContainer>
-        <div onClick={onToggle}>x</div>
-        <SmallText>Title</SmallText>
-        <TitleInput
-          name="title"
-          type="text"
-          value={inputValue}
-          onChange={onInputChange}
-        />
-
-        <Button onClick={onSubmit}>ok</Button>
-      </AddingContainer>
-    );
+class FilmAdder extends React.Component {
+  componentDidUpdate() {
+    if (this._input != null) {
+      this._input.focus();
+    }
   }
 
-  return (
-    <Container>
-      <div onClick={onToggle}>x</div>
-      <p>Add a film</p>
-    </Container>
-  );
+  render() {
+    const {
+      isAdding,
+      inputValue,
+      onInputChange,
+      onSubmit,
+      onToggle
+    } = this.props;
+    const formattedInputValue = capitalizeFirstLetterOfEachWord(inputValue);
+
+    if (isAdding) {
+      return (
+        <AddingContainer>
+          <div onClick={onToggle}>
+            <SmallText>Title</SmallText>
+          </div>
+          <TitleInput
+            ref={c => (this._input = c)}
+            name="title"
+            type="text"
+            value={formattedInputValue}
+            onChange={onInputChange}
+          />
+
+          <Button onClick={onSubmit}>ok</Button>
+        </AddingContainer>
+      );
+    }
+
+    return (
+      <Container>
+        <div onClick={onToggle}>
+          <p>Add a film</p>
+        </div>
+      </Container>
+    );
+  }
 }
 
 function capitalizeFirstLetterOfEachWord(string) {

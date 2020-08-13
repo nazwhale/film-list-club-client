@@ -40,6 +40,7 @@ class Home extends React.Component {
   handleFilmAdderSubmit = event => {
     // post value to db
     console.log("about to post to db", this.state.titleInputValue);
+    this.setState({ filmAdderToggled: false });
   };
 
   toggleFilmAdder = event => {
