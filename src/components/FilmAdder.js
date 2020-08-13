@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from ".";
 import { theme } from "../theme";
@@ -59,53 +59,51 @@ const StyledButton = styled(Button)`
   bottom: 2px;
 `;
 
-class FilmAdder extends React.Component {
-  componentDidUpdate() {
-    if (this._input != null) {
-      this._input.focus();
+function FilmAdder({
+  isAdding,
+  inputValue,
+  onInputChange,
+  onSubmit,
+  onToggle
+}) {
+  const formattedInputValue = capitalizeFirstLetterOfEachWord(inputValue);
+
+  let _input;
+  useEffect(() => {
+    if (_input != null) {
+      _input.focus();
     }
-  }
+  });
 
-  render() {
-    const {
-      isAdding,
-      inputValue,
-      onInputChange,
-      onSubmit,
-      onToggle
-    } = this.props;
-    const formattedInputValue = capitalizeFirstLetterOfEachWord(inputValue);
-
-    if (isAdding) {
-      return (
-        <AddingContainer>
-          <div onClick={onToggle}>
-            <SmallText>Title</SmallText>
-          </div>
-
-          <ButtonInputContainer>
-            <TitleInput
-              ref={c => (this._input = c)}
-              name="title"
-              type="text"
-              value={formattedInputValue}
-              onChange={onInputChange}
-            />
-
-            <StyledButton onClick={onSubmit}>ok</StyledButton>
-          </ButtonInputContainer>
-        </AddingContainer>
-      );
-    }
-
+  if (isAdding) {
     return (
-      <div onClick={onToggle}>
-        <Container>
-          <p>Add a film</p>
-        </Container>
-      </div>
+      <AddingContainer>
+        <div onClick={onToggle}>
+          <SmallText>Title</SmallText>
+        </div>
+
+        <ButtonInputContainer>
+          <TitleInput
+            ref={c => (_input = c)}
+            name="title"
+            type="text"
+            value={formattedInputValue}
+            onChange={onInputChange}
+          />
+
+          <StyledButton onClick={onSubmit}>ok</StyledButton>
+        </ButtonInputContainer>
+      </AddingContainer>
     );
   }
+
+  return (
+    <div onClick={onToggle}>
+      <Container>
+        <p>Add a film</p>
+      </Container>
+    </div>
+  );
 }
 
 function capitalizeFirstLetterOfEachWord(string) {
