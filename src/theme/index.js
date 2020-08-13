@@ -5,8 +5,9 @@ export const theme = {
     primary: "#18A0FB",
     primaryHover: "rgba(24,160,251,0.8)",
     disabled: "rgb(169,169,169)",
-    grey: "rgba(211,211,211)",
     lightGrey: "rgba(211,211,211,0.3)",
+    grey: "rgba(211,211,211)",
+    darkGrey: "#505050",
     link: "#007ACC"
   },
   box: {

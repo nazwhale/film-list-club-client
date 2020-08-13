@@ -37,7 +37,7 @@ class Header extends React.Component {
   render() {
     return (
       <Container>
-        <h1>Name of thing</h1>
+        <h1>Film List Club</h1>
         <LogoutButton onClick={this.logout}>logout</LogoutButton>
       </Container>
     );

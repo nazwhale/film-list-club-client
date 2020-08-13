@@ -1,45 +1,70 @@
 import React from "react";
-import { Button, Emoji } from "../components";
-import AuthService from "../auth";
-const Auth = new AuthService();
+import { Emoji, FilmListItem, FilmAdder } from "../components";
+
+import { APIError } from "../api";
+import { fetchFromAPI } from "../api";
 
 class Home extends React.Component {
   state = {
-    data: null
+    listData: null,
+    error: null,
+    isLoading: false,
+    titleInputValue: "",
+    filmAdderToggled: false
   };
 
-  componentDidMount() {
-    const data = [
-      {
-        id: 1,
-        name: "bill"
-      },
-      {
-        id: 2,
-        name: "ben"
-      },
-      {
-        id: 3,
-        name: "flowerpot men"
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    try {
+      const rsp = await fetchFromAPI("POST", "list-items-for-user", {
+        user_id: 4
+      });
+
+      this.setState({ listData: rsp.data, error: null, isLoading: false });
+    } catch (err) {
+      let error = new APIError({ data: "Network error" });
+      if (err.response != null) {
+        error = new APIError(err.response);
       }
-    ];
-    this.setState({ data });
+      this.setState({ error, isLoading: false });
+    }
   }
 
-  handleClick = async () => {
-    console.log("💥");
-    try {
-      await Auth.logout();
-    } catch (err) {
-      alert(err);
-    }
+  handleFilmAdderInputChange = event => {
+    const { value } = event.target;
+    this.setState({
+      titleInputValue: value
+    });
+  };
+
+  handleFilmAdderSubmit = event => {
+    // post value to db
+    console.log("about to post to db", this.state.titleInputValue);
+  };
+
+  toggleFilmAdder = event => {
+    this.setState({ filmAdderToggled: !this.state.filmAdderToggled });
   };
 
   render() {
-    const { data } = this.state;
+    const {
+      listData,
+      isLoading,
+      error,
+      titleInputValue,
+      filmAdderToggled
+    } = this.state;
 
-    if (data == null) {
+    if (isLoading) {
       return "loading data...";
+    }
+
+    if (listData == null) {
+      return "No items in list";
+    }
+
+    if (listData.length === 0) {
+      return "No items in list";
     }
 
     return (
@@ -48,9 +73,26 @@ class Home extends React.Component {
           <Emoji emojum="👋" label="wave" />
           Hello you logged in user you
         </h3>
-        {data.map(r => {
-          return <p key={r.id}>{r.name}</p>;
+
+        <FilmAdder
+          isAdding={filmAdderToggled}
+          inputValue={titleInputValue}
+          onInputChange={this.handleFilmAdderInputChange}
+          onSubmit={this.handleFilmAdderSubmit}
+          onToggle={this.toggleFilmAdder}
+        />
+
+        <hr />
+
+        {listData.map(l => {
+          return <FilmListItem key={l.id} title={l.title} />;
         })}
+
+        {error != null && (
+          <p>
+            Error: <code>{`${error.status}: ${error.data}`}</code>
+          </p>
+        )}
       </>
     );
   }

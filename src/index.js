@@ -50,6 +50,8 @@ function PrivateRoute({ path, component }) {
   // TODO: Lookup how to do this properly
   // Cant make it async / await, as it's a component 🤔
   // So how to wait on the promise?
+  //
+  // Should default to logging out if the /logged-in request fails
   const isLoggedIn = Auth.isLoggedIn("user_001");
   console.log("isLoggedIn", isLoggedIn); // Why is this a promise???
 

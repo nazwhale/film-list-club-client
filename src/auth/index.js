@@ -23,12 +23,11 @@ export default class AuthService {
 
     try {
       const rsp = await fetchFromAPI("POST", "logged-in", {});
-      console.log("rsp:", rsp);
+      console.log("loggedInData", rsp);
       return true;
     } catch (err) {
-      console.log("err:", err);
+      console.log("login err:", err);
     }
-    console.log("finished");
     return false;
   };
 }
