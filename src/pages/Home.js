@@ -1,5 +1,5 @@
 import React from "react";
-import { Emoji, FilmListItem, FilmAdder } from "../components";
+import { FilmListItem, FilmAdder } from "../components";
 
 import { APIError } from "../api";
 import { fetchFromAPI } from "../api";
@@ -70,11 +70,6 @@ class Home extends React.Component {
 
     return (
       <>
-        <h3>
-          <Emoji emojum="👋" label="wave" />
-          Hello you logged in user you
-        </h3>
-
         <FilmAdder
           isAdding={filmAdderToggled}
           inputValue={titleInputValue}

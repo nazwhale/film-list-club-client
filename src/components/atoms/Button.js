@@ -11,7 +11,7 @@ const StyledButton = styled.button`
     background-image: linear-gradient(to right, #3ec7e0, #526bf4);
   }
 
-  font-size: 18px;
+  font-size: 20px;
   letter-spacing: 0.05rem;
   font-weight: 700;
   border-radius: 1rem;

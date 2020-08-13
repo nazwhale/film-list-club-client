@@ -9,6 +9,10 @@ const Container = styled.div`
   margin: 2rem 0;
   padding: 2rem;
   font-size: 18px;
+
+  @media (max-width: 501px) {
+    padding: 1rem;
+  }
 `;
 
 const AddingContainer = styled.div`
@@ -17,6 +21,10 @@ const AddingContainer = styled.div`
   margin: 2rem 0;
   padding: 1rem 2rem;
   font-size: 18px;
+
+  @media (max-width: 501px) {
+    padding: 1rem;
+  }
 `;
 
 const SmallText = styled.p`
@@ -29,7 +37,7 @@ const TitleInput = styled.input`
   font-weight: bold;
   padding: 1rem;
   margin-right: 1rem;
-  width: 60%;
+  width: 100%;
 
   border-image-source: linear-gradient(to right, #e052a0, #f15c41);
   border-width: 3pt;
@@ -41,6 +49,14 @@ const TitleInput = styled.input`
     border-width: 3pt;
     border-image-slice: 1;
   }
+`;
+
+const ButtonInputContainer = styled.div`
+  display: flex;
+`;
+
+const StyledButton = styled(Button)`
+  bottom: 2px;
 `;
 
 class FilmAdder extends React.Component {
@@ -66,25 +82,28 @@ class FilmAdder extends React.Component {
           <div onClick={onToggle}>
             <SmallText>Title</SmallText>
           </div>
-          <TitleInput
-            ref={c => (this._input = c)}
-            name="title"
-            type="text"
-            value={formattedInputValue}
-            onChange={onInputChange}
-          />
 
-          <Button onClick={onSubmit}>ok</Button>
+          <ButtonInputContainer>
+            <TitleInput
+              ref={c => (this._input = c)}
+              name="title"
+              type="text"
+              value={formattedInputValue}
+              onChange={onInputChange}
+            />
+
+            <StyledButton onClick={onSubmit}>ok</StyledButton>
+          </ButtonInputContainer>
         </AddingContainer>
       );
     }
 
     return (
-      <Container>
-        <div onClick={onToggle}>
+      <div onClick={onToggle}>
+        <Container>
           <p>Add a film</p>
-        </div>
-      </Container>
+        </Container>
+      </div>
     );
   }
 }

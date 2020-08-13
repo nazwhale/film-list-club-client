@@ -7,6 +7,10 @@ const Container = styled.div`
   border-radius: 5px;
   margin: 2rem 0;
   padding: 0 2rem;
+
+  @media (max-width: 501px) {
+    padding: 1rem;
+  }
 `;
 
 function FilmListItem({ title }) {
