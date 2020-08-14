@@ -17,6 +17,10 @@ class Home extends React.Component {
   };
 
   async componentDidMount() {
+    this.fetchListItems();
+  }
+
+  async fetchListItems() {
     this.setState({ isLoading: true });
     const userId = Auth.getUserId();
 
@@ -42,10 +46,28 @@ class Home extends React.Component {
     });
   };
 
-  handleFilmAdderSubmit = event => {
-    // post value to db
-    console.log("about to post to db", this.state.titleInputValue);
-    this.setState({ filmAdderToggled: false });
+  handleFilmAdderSubmit = async event => {
+    console.log("about to write to db", this.state.titleInputValue);
+    const { titleInputValue } = this.state;
+    const userId = Auth.getUserId();
+
+    try {
+      // Should this return the new list?
+      const rsp = await fetchFromAPI("POST", "create-list-item", {
+        user_id: userId,
+        title: titleInputValue
+      });
+
+      console.log("createData", rsp);
+      this.setState({ error: null, isLoading: false });
+      this.fetchListItems();
+    } catch (err) {
+      let error = new APIError({ data: "Network error" });
+      if (err.response != null) {
+        error = new APIError(err.response);
+      }
+      this.setState({ error, isLoading: false });
+    }
   };
 
   toggleFilmAdder = event => {

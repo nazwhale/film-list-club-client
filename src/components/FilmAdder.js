@@ -59,6 +59,7 @@ const StyledButton = styled(Button)`
   bottom: 2px;
 `;
 
+// TODO: unToggle when loses focus? Is there an event listener for this?
 function FilmAdder({
   isAdding,
   inputValue,
