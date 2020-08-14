@@ -46,13 +46,14 @@ ReactDOM.render(
 // screen if you're not yet authenticated.
 function PrivateRoute({ path, component }) {
   const Auth = new AuthService();
+  const userId = Auth.getUserId();
 
   // TODO: Lookup how to do this properly
   // Cant make it async / await, as it's a component 🤔
   // So how to wait on the promise?
   //
   // Should default to logging out if the /logged-in request fails
-  const isLoggedIn = Auth.isLoggedIn("user_001");
+  const isLoggedIn = Auth.isLoggedIn(userId);
   console.log("isLoggedIn", isLoggedIn); // Why is this a promise???
 
   if (!isLoggedIn) {

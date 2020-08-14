@@ -49,6 +49,7 @@ export default class Login extends Component {
 
     try {
       const rsp = await Auth.login(email, password);
+      console.log("hi", rsp);
       this.setState({ loginDeets: rsp, error: null });
       this.props.history.push("/app");
     } catch (err) {

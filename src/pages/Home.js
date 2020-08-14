@@ -4,6 +4,9 @@ import { FilmListItem, FilmAdder } from "../components";
 import { APIError } from "../api";
 import { fetchFromAPI } from "../api";
 
+import AuthService from "../auth";
+const Auth = new AuthService();
+
 class Home extends React.Component {
   state = {
     listData: null,
@@ -15,9 +18,11 @@ class Home extends React.Component {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
+    const userId = Auth.getUserId();
+
     try {
       const rsp = await fetchFromAPI("POST", "list-items-for-user", {
-        user_id: 4
+        user_id: userId
       });
 
       this.setState({ listData: rsp.data, error: null, isLoading: false });
@@ -60,14 +65,6 @@ class Home extends React.Component {
       return "loading data...";
     }
 
-    if (listData == null) {
-      return "No items in list";
-    }
-
-    if (listData.length === 0) {
-      return "No items in list";
-    }
-
     return (
       <>
         <FilmAdder
@@ -80,9 +77,13 @@ class Home extends React.Component {
 
         <hr />
 
-        {listData.map(l => {
-          return <FilmListItem key={l.id} title={l.title} />;
-        })}
+        {listData == null ? (
+          <p>nufink</p>
+        ) : (
+          listData.map(l => {
+            return <FilmListItem key={l.id} title={l.title} />;
+          })
+        )}
 
         {error != null && (
           <p>

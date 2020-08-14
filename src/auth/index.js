@@ -1,16 +1,26 @@
 import { fetchFromAPI } from "../api";
 
+const LOCAL_STORAGE_USERID_KEY = "userId";
+
 export default class AuthService {
   login = (email, password) => {
     return fetchFromAPI("POST", "login", {
       email,
       password
+    }).then(rsp => {
+      // setUserId in localStorage then return a promise for the caller to
+      // handle
+      this.setUserId(rsp.data.user_id);
+      return rsp;
     });
   };
 
   logout = id => {
     return fetchFromAPI("POST", "logout", {
       id
+    }).then(rsp => {
+      this.clearUserId();
+      return rsp;
     });
   };
 
@@ -19,15 +29,23 @@ export default class AuthService {
   //
   // TODO: Lookup how to do this properly
   isLoggedIn = async userId => {
-    console.log(`checking if ${userId} is logged in...`);
-
     try {
-      const rsp = await fetchFromAPI("POST", "logged-in", {});
-      console.log("loggedInData", rsp);
+      await fetchFromAPI("POST", "logged-in", {});
       return true;
-    } catch (err) {
-      console.log("login err:", err);
-    }
+    } catch (err) {}
     return false;
+  };
+
+  setUserId = userId => {
+    localStorage.setItem(LOCAL_STORAGE_USERID_KEY, userId);
+  };
+
+  getUserId = () => {
+    const idString = localStorage.getItem(LOCAL_STORAGE_USERID_KEY);
+    return Number(idString);
+  };
+
+  clearUserId = () => {
+    localStorage.removeItem(LOCAL_STORAGE_USERID_KEY);
   };
 }

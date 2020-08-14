@@ -27,7 +27,8 @@ const LogoutButton = styled.button`
 class Header extends React.Component {
   logout = async () => {
     try {
-      await Auth.logout(3);
+      const userId = Auth.getUserId();
+      await Auth.logout(userId);
       this.props.history.push("/login");
     } catch (err) {
       alert(err);
