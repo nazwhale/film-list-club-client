@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Button } from ".";
 import { theme } from "../theme";
+import { capitalizeFirstLetterOfEachWord } from "../utils";
 
 const Container = styled.div`
-  border: 2px solid ${theme.color.grey};
+  border: 1px solid ${theme.color.grey};
   border-radius: 5px;
-  margin: 2rem 0;
-  padding: 2rem;
-  font-size: 18px;
+  margin: 1rem 0;
+  padding: 0 2rem;
 
   @media (max-width: 501px) {
     padding: 1rem;
@@ -16,11 +16,10 @@ const Container = styled.div`
 `;
 
 const AddingContainer = styled.div`
-  border: 2px solid ${theme.color.grey};
+  border: 1px solid ${theme.color.grey};
   border-radius: 5px;
-  margin: 2rem 0;
+  margin: 1rem 0;
   padding: 1rem 2rem;
-  font-size: 18px;
 
   @media (max-width: 501px) {
     padding: 1rem;
@@ -59,56 +58,79 @@ const StyledButton = styled(Button)`
   bottom: 2px;
 `;
 
-// TODO: unToggle when loses focus? Is there an event listener for this?
-function FilmAdder({
-  isAdding,
-  inputValue,
-  onInputChange,
-  onSubmit,
-  onToggle
-}) {
-  const formattedInputValue = capitalizeFirstLetterOfEachWord(inputValue);
+const FilmAdder = React.memo(
+  ({ isAdding, inputValue, onInputChange, onSubmit, onToggle }) => {
+    const formattedInputValue = capitalizeFirstLetterOfEachWord(inputValue);
 
-  let _input;
-  useEffect(() => {
-    if (_input != null) {
-      _input.focus();
+    const handleKeyDown = event => {
+      if (event.key === "Enter") {
+        onSubmit();
+      }
+    };
+
+    let _input;
+    useEffect(() => {
+      if (_input != null) {
+        _input.focus();
+      }
+    });
+
+    const placholder = randomPlaceholder();
+
+    if (isAdding) {
+      return (
+        <AddingContainer>
+          <div onClick={onToggle}>
+            <SmallText>Add a film...</SmallText>
+          </div>
+
+          <ButtonInputContainer>
+            <TitleInput
+              ref={c => (_input = c)}
+              name="title"
+              type="text"
+              value={formattedInputValue}
+              onChange={onInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder={placholder}
+            />
+
+            <StyledButton onClick={onSubmit}>ok</StyledButton>
+          </ButtonInputContainer>
+        </AddingContainer>
+      );
     }
-  });
 
-  if (isAdding) {
     return (
-      <AddingContainer>
-        <div onClick={onToggle}>
-          <SmallText>Title</SmallText>
-        </div>
-
-        <ButtonInputContainer>
-          <TitleInput
-            ref={c => (_input = c)}
-            name="title"
-            type="text"
-            value={formattedInputValue}
-            onChange={onInputChange}
-          />
-
-          <StyledButton onClick={onSubmit}>ok</StyledButton>
-        </ButtonInputContainer>
-      </AddingContainer>
+      <div onClick={onToggle}>
+        <Container>
+          <p style={{ color: theme.color.darkGrey }}>Add a film...</p>
+        </Container>
+      </div>
     );
   }
+);
 
-  return (
-    <div onClick={onToggle}>
-      <Container>
-        <p>Add a film</p>
-      </Container>
-    </div>
-  );
-}
-
-function capitalizeFirstLetterOfEachWord(string) {
-  return string.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+function randomPlaceholder() {
+  const films = [
+    "The Lion King",
+    "Space Jam",
+    "Boyz n the Hood",
+    "Parasite",
+    "Cool Runnings",
+    "The Shining",
+    "Ratatouille",
+    "Psycho",
+    "Seven Samurai",
+    "Pan's Labyrinth",
+    "Breathless",
+    "Apocalypse Now",
+    "Rashomon",
+    "2001: A Space Odyssey",
+    "The Blues Brothers"
+  ];
+  const pick = Math.floor(Math.random() * films.length);
+  return films[pick];
 }
 
 export default FilmAdder;

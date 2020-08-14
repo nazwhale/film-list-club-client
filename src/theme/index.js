@@ -7,8 +7,12 @@ export const theme = {
     disabled: "rgb(169,169,169)",
     lightGrey: "rgba(211,211,211,0.3)",
     grey: "rgba(211,211,211)",
-    darkGrey: "#505050",
+    darkGrey: "grey",
     link: "#007ACC"
+  },
+  font: {
+    header: "Neuton",
+    body: "Open Sans"
   },
   box: {
     borderRadius: "5px",

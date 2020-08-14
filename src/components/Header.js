@@ -18,9 +18,14 @@ const LogoutButton = styled.button`
   background: none;
   cursor: pointer;
   font: inherit;
+  font-weight: bold;
+`;
 
+const LogoutText = styled.h3`
   &:hover {
-    color: ${theme.color.primaryHover};
+    background: linear-gradient(to right, #3ec7e0, #526bf4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
@@ -39,7 +44,9 @@ class Header extends React.Component {
     return (
       <Container>
         <h1>Film List Club</h1>
-        <LogoutButton onClick={this.logout}>logout</LogoutButton>
+        <LogoutButton onClick={this.logout}>
+          <LogoutText>Logout</LogoutText>
+        </LogoutButton>
       </Container>
     );
   }

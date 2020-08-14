@@ -14,6 +14,10 @@ class Landing extends React.Component {
         <Link to="/login" style={{ textDecoration: "none" }}>
           <p>Login</p>
         </Link>
+
+        <Link to="/app" style={{ textDecoration: "none" }}>
+          <p>My List</p>
+        </Link>
       </>
     );
   }
